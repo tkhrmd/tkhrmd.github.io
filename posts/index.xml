@@ -6,8 +6,105 @@
     <description>Recent content in Posts on あの時のアレ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 22 Apr 2016 19:47:23 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 05 May 2016 02:24:44 +0900</lastBuildDate>
     <atom:link href="http://tkhrmd.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CentOS7をインストールして最初にやること</title>
+      <link>http://tkhrmd.github.io/posts/2014/10/31/centos7-setup/</link>
+      <pubDate>Thu, 05 May 2016 02:24:44 +0900</pubDate>
+      
+      <guid>http://tkhrmd.github.io/posts/2014/10/31/centos7-setup/</guid>
+      <description>&lt;p&gt;SELinuxを無効化&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@example ~]# getenforce
+[root@example ~]# setenforce 0
+[root@example ~]# getenforce
+[root@example ~]# cp /etc/sysconfig/selinux /etc/sysconfig/selinux.orginal
+[root@example ~]# vi /etc/sysconfig/selinux
+[root@example ~]# diff /etc/sysconfig/selinux /etc/sysconfig/selinux.orginal
+7c7
+&amp;lt; SELINUX=disabled
+---
+&amp;gt; SELINUX=enforcing
+[root@example ~]# rm /etc/sysconfig/selinux.orginal
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ユーザーを作成&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@example ~]# useradd admin
+[root@example ~]# passwd admin
+[root@example ~]# usermod -G wheel admin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;作成したユーザーの公開鍵を登録&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@example ~]# sudo su - admin
+[admin@example ~]$ mkdir .ssh
+[admin@example ~]$ echo &#39;public key&#39; &amp;gt; .ssh/authorized_keys
+[admin@example ~]$ chmod 700 .ssh/
+[admin@example ~]$ chmod 600 .ssh/authorized_keys
+[admin@example ~]$ exit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;firewalldとsshdの設定を変更&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SSHのポート番号を変更(22 -&amp;gt; 10022)&lt;/li&gt;
+&lt;li&gt;rootでのログインを禁止&lt;/li&gt;
+&lt;li&gt;公開鍵認証を有効化&lt;/li&gt;
+&lt;li&gt;パスワード認証を無効化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@example ~]# firewall-cmd --list-services
+[root@example ~]# firewall-cmd --list-ports
+[root@example ~]# firewall-cmd --add-port=10022/tcp
+[root@example ~]# firewall-cmd --permanent --add-port=10022/tcp
+[root@example ~]# firewall-cmd --list-ports
+[root@example ~]# cp /etc/ssh/sshd_config  /etc/ssh/sshd_config.original
+[root@example ~]# vi /etc/ssh/sshd_config
+[root@example ~]# diff /etc/ssh/sshd_config /etc/ssh/sshd_config.original
+17c17
+&amp;lt; Port 10022
+---
+&amp;gt; #Port 22
+23c23
+&amp;lt; Protocol 2
+---
+&amp;gt; #Protocol 2
+49c49
+&amp;lt; PermitRootLogin no
+---
+&amp;gt; #PermitRootLogin yes
+55c55
+&amp;lt; PubkeyAuthentication yes
+---
+&amp;gt; #PubkeyAuthentication yes
+79c79
+&amp;lt; PasswordAuthentication no
+---
+&amp;gt; PasswordAuthentication yes
+[root@example ~]# systemctl restart sshd.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;SSH接続を確認&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh example.com -p 10022 -l admin -i .ssh/id_rsa
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;firewalldの設定を変更&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SSH(22)を無効化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@example ~]# rm /etc/ssh/sshd_config.original
+[root@example ~]# firewall-cmd --remove-service=ssh
+[root@example ~]# firewall-cmd --permanent --remove-service=ssh
+[root@example ~]# firewall-cmd --list-services
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>hello</title>
