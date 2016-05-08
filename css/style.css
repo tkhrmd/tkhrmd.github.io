@@ -1,8 +1,38 @@
-code {
-  font-family: Inconsolata;
-}
-.container {
-  padding-top: 7.5rem;
-  padding-bottom: 7.5rem;
+body {
+  margin: auto;
   max-width: 80rem;
+}
+
+code {
+  /*font-family: Inconsolata;*/
+  font-family: 'Courier New';
+
+}
+
+.page-header {
+  margin-top: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid;
+}
+
+.entry-header {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid;
+}
+
+.entry-body {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.entry-list {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  list-style-type: none;
+}
+
+.entry-list-item {
+
 }

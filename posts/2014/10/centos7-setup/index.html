@@ -4,25 +4,23 @@
     <meta charset="utf-8">
     <title>CentOS7をインストールして最初にやること - あの時のアレ</title>
     
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic|Inconsolata">
-
-    
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-
-    
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.0.3/milligram.min.css">
-
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
     <link rel="stylesheet" type="text/css" href="http://tkhrmd.github.io/css/style.css">
   </head>
   <body>
-    <header></header>
+    <header class="page-header">
+      <a href="http://tkhrmd.github.io/" class="page-title">あの時のアレ</a>
+    </header>
 
-<article class="container">
-  <header>
-    <h1>CentOS7をインストールして最初にやること</h1>
-    <div><time datetime="2016-05-05">05 May 2016</time></div>
+<main class="entry">
+  <header class="entry-header">
+    <h1 class="entry-title">CentOS7をインストールして最初にやること</h1>
+    <time datetime="2016-05-05" class="entry-meta">5 May 2016</time>
   </header>
-  <div><p>SELinuxを無効化</p>
+  <div class="entry-body">
+    
+
+<h2 id="selinuxを無効化:3e40bcd4d88afeb48f235d4396ccdffe">SELinuxを無効化</h2>
 
 <pre><code>[root@example ~]# getenforce
 [root@example ~]# setenforce 0
@@ -37,14 +35,14 @@
 [root@example ~]# rm /etc/sysconfig/selinux.orginal
 </code></pre>
 
-<p>ユーザーを作成</p>
+<h2 id="ユーザーを作成:3e40bcd4d88afeb48f235d4396ccdffe">ユーザーを作成</h2>
 
 <pre><code>[root@example ~]# useradd admin
 [root@example ~]# passwd admin
 [root@example ~]# usermod -G wheel admin
 </code></pre>
 
-<p>作成したユーザーの公開鍵を登録</p>
+<h2 id="作成したユーザーの公開鍵を登録:3e40bcd4d88afeb48f235d4396ccdffe">作成したユーザーの公開鍵を登録</h2>
 
 <pre><code>[root@example ~]# sudo su - admin
 [admin@example ~]$ mkdir .ssh
@@ -54,7 +52,7 @@
 [admin@example ~]$ exit
 </code></pre>
 
-<p>firewalldとsshdの設定を変更</p>
+<h2 id="firewalldとsshdの設定を変更:3e40bcd4d88afeb48f235d4396ccdffe">firewalldとsshdの設定を変更</h2>
 
 <ul>
 <li>SSHのポート番号を変更(22 -&gt; 10022)</li>
@@ -94,12 +92,12 @@
 [root@example ~]# systemctl restart sshd.service
 </code></pre>
 
-<p>SSH接続を確認</p>
+<h3 id="ssh接続を確認:3e40bcd4d88afeb48f235d4396ccdffe">SSH接続を確認</h3>
 
 <pre><code>ssh example.com -p 10022 -l admin -i .ssh/id_rsa
 </code></pre>
 
-<p>firewalldの設定を変更</p>
+<h3 id="firewalldの設定を変更:3e40bcd4d88afeb48f235d4396ccdffe">firewalldの設定を変更</h3>
 
 <ul>
 <li>SSH(22)を無効化</li>
@@ -110,10 +108,10 @@
 [root@example ~]# firewall-cmd --permanent --remove-service=ssh
 [root@example ~]# firewall-cmd --list-services
 </code></pre>
-</div>
-  <footer></footer>
-</article>
-    <footer></footer>
+
+  </div>
+</main>
+    <footer class="page-footer"></footer>
   </body>
 </html>
 
